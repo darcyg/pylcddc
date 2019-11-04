@@ -33,7 +33,7 @@ from . import commands
 # Until there is a formal declaration of
 # what characters are allowed, let's restrict ourselves to a
 # safe subset of UTF-8.
-ACCEPTABLE_CHARACTERS: str = (string.ascii_letters + string.punctuation
+ACCEPTABLE_CHARACTERS = str(string.ascii_letters + string.punctuation
                               + string.digits + ' ')
 
 
