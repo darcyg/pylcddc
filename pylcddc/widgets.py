@@ -256,16 +256,16 @@ class String(Widget):
         self._text = text
 
     def __repr__(self) -> str:
-        return (f'{self.__class__.__name__}({self.name!r}, {self.x!r}, '
-                f'{self.y!r}, {self.text!r})')
+        return ('{}({!r}, {!r}, '.format(self.__class__.__name__,self.name,self.x)+
+                '{!r}, {!r})'.format(self.y,self.text))
 
     def _validate_input(self, x: int, y: int, text: str):
         if (x < 1) or (y < 1):
-            raise ValueError('invalid string placement coordinates'
-                             f' x: {x} y: {y}')
+            raise ValueError('invalid string placement coordinates'+
+                             ' x: {} y: {}'.format(x,y))
         for ch in text:
             if ch not in ACCEPTABLE_CHARACTERS:
-                raise ValueError(f'invalid character to display: {ch!r}')
+                raise ValueError('invalid character to display: {!r}'.format(ch))
 
     @property
     def x(self) -> int:
@@ -338,12 +338,12 @@ class Title(Widget):
         self._title = title
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}({self.name!r}, {self.title!r})'
+        return '{}({!r}, {!r})'.format(self.__class__.__name__,self.name,self.title)
 
     def _validate_input(self, title: str):
         for ch in title:
             if ch not in ACCEPTABLE_CHARACTERS:
-                raise ValueError(f'invalid character to display: {ch!r}')
+                raise ValueError('invalid character to display: {!r}'.format(ch))
 
     @property
     def title(self) -> str:
@@ -389,7 +389,7 @@ class Bar(Widget, abc.ABC):
         """
         if ((wtype is not WidgetType.HORIZONTAL_BAR)
                 and (wtype is not WidgetType.VERTICAL_BAR)):
-            raise ValueError(f'invalid bar type: {wtype}')
+            raise ValueError('invalid bar type: {}'.format(wtype))
         super().__init__(wtype, name)
         self._validate_input(x, y, length)
         self._x = x
@@ -397,15 +397,15 @@ class Bar(Widget, abc.ABC):
         self._length = length
 
     def __repr__(self) -> str:
-        return (f'{self.__class__.__name__}({self.x!r}, {self.y!r}, '
-                f'{self.length!r})')
+        return ('{}({!r}, {!r}, '.format(self.__class__.__name__,self.x,self.y)+
+                '{!r})'.format(self.length))
 
     def _validate_input(self, x: int, y: int, length: int):
         if (x < 1) or (y < 1):
-            raise ValueError('invalid bar placement '
-                             f'coordinates: x: {x}, y: {y}')
+            raise ValueError('invalid bar placement '+
+                             'coordinates: x: {}, y: {}'.format(x,y))
         if length < 0:
-            raise ValueError('invalid bar length: {bar_length}')
+            raise ValueError('invalid bar length: {}'.format(length))
 
     @property
     def x(self) -> int:
@@ -555,14 +555,14 @@ class Icon(Widget):
         self._icon = icon
 
     def __repr__(self) -> str:
-        return (f'{self.__class__.__name__}({self.name!r}, {self.x!r}, '
-                f'{self.y!r}, {self.icon!r})')
+        return ('{}({!r}, {!r}, '.format(self.__class__.__name__,self.name,self.x)+
+                '{!r}, {!r})'.format(self.y,self.icon))
 
     def _validate_params(self, x: int, y: int):
         # icon is not validated because it has a value of enumeration type.
         if (x < 1) or (y < 1):
-            raise ValueError('invalid widget placement coordinates: '
-                             f'x: {x}, y: {y}')
+            raise ValueError('invalid widget placement coordinates: '+
+                             'x: {}, y: {}'.format(x,y))
 
     @property
     def x(self) -> int:
@@ -662,21 +662,21 @@ class Scroller(Widget):
     def _validate_input(self, x: int, y: int, width: int, height: int,
                         speed: int, text: str):
         if (x < 1) or (y < 1):
-            raise ValueError('invalid placement coordinates:'
-                             ' x: {x}, y: {y}')
+            raise ValueError('invalid placement coordinates:'+
+                             ' x: {}, y: {}'.format(x,y))
         if (width < 1) or (height < 1):
-            raise ValueError('invalid dimensions: width: {width}'
-                             ' height: {height}')
+            raise ValueError('invalid dimensions: width: {}'.format(width)+
+                             ' height: {}'.format(height))
         if speed < 0:
-            raise ValueError('invalid speed: {speed}')
+            raise ValueError('invalid speed: {}'.format(speed))
         for ch in text:
             if ch not in ACCEPTABLE_CHARACTERS:
-                raise ValueError(f'invalid character in text: {ch!r}')
+                raise ValueError('invalid character in text: {!r}'.firmat(ch))
 
     def __repr__(self):
-        return (f'{self.__class__.__name__}({self.name!r}, {self.x!r}, '
-                f'{self.y!r}, {self.width!r}, {self.height!r}, '
-                f'{self.direction!r}, {self.speed!r}, {self.text!r})')
+        return ('{}({!r}, {!r}, '.format(self.__class__.__name__,self.name,self.x)+
+                '{!r}, {!r}, {!r}, '.format(self.y,self.width,self.height)+
+                '{!r}, {!r}, {!r})'.format(self.direction,self.speed,self.text))
 
     @property
     def x(self) -> int:
@@ -866,16 +866,16 @@ class Frame(Widget, WidgetContainer):
         self._widgets = collections.OrderedDict()
         for widget in wids:
             if widget.name in self:
-                raise KeyError('widget has name collision with '
-                               f'another stored widget: {widget.name}')
+                raise KeyError('widget has name collision with '+
+                               'another stored widget: {}'.format(widget.name))
             self._widgets[widget.name] = widget
 
     def __repr__(self) -> str:
-        return (f'{self.__class__.__name__}({self.name!r}, '
-                f'({", ".join([repr(widget) for widget in self.values()])}), '
-                f'{self.x!r}, {self.y!r}, {self.width!r}, {self.height!r}, '
-                f'{self.inner_width!r}, {self.inner_height!r}, '
-                f'{self.direction!r}, {self.speed!r})')
+        return ('{}({!r}, '.format(self.__class__.__name__,self.name)+
+                '({}), '.format(", ".join([repr(widget) for widget in self.values()]))+
+                '{!r}, {!r}, {!r}, {!r}, '.format(self.x,self.y,self.width,self.height)+
+                '{!r}, {!r}, '.format(self.inner_width,self.inner_height)+
+                '{!r}, {!r})'.format(self.direction,self.speed))
 
     def __getitem__(self, name: str) -> Widget:
         return self._widgets[name]
@@ -891,16 +891,16 @@ class Frame(Widget, WidgetContainer):
                          inner_height: int, speed: int):
         # Direction is a value of enumeration type, so it is not validated.
         if (x < 1) or (y < 1):
-            raise ValueError('invalid widget placement coordinates:'
-                             f' x: {x}, y: {y}')
+            raise ValueError('invalid widget placement coordinates:'+
+                             ' x: {}, y: {}'.format(x,y))
         if (width < 1) or (height < 1):
-            raise ValueError('invalid widget dimensions: '
-                             f'width: {width}, height: {height}')
+            raise ValueError('invalid widget dimensions: '+
+                             'width: {}, height: {}'.format(width,height))
         if (inner_width < 1) or (inner_height < 1):
-            raise ValueError('invalid frame virtual screen dimensions: '
-                             f'width: {inner_width}, height: {inner_height}')
+            raise ValueError('invalid frame virtual screen dimensions: '+
+                             'width: {}, height: {}'.format(inner_width,inner_height))
         if speed < 0:
-            raise ValueError(f'invalid speed: {speed}')
+            raise ValueError('invalid speed: {}'.format(speed))
 
     @property
     def ids_required(self) -> int:
@@ -1125,15 +1125,15 @@ class Num(Widget):
         self._digit = digit
 
     def __repr__(self) -> str:
-        return (f'{self.__class__.__name__}({self.name!r}, {self.x!r}, '
-                f'{self.digit!r})')
+        return ('{}({!r}, {!r}, '.format(self.__class__.__name__,self.name,self.x)+
+                '{!r})'.format(self.digit))
 
     def _validate_params(self, x: int, digit: typing.Union[int, SpecialDigit]):
         if x < 1:
-            raise ValueError(f'invalid bignum placement position: x: {x}')
+            raise ValueError('invalid bignum placement position: x: {}'.format(x))
         if isinstance(digit, int):
             if digit not in range(10):
-                raise ValueError(f'invalid decimal digit to display: {digit}')
+                raise ValueError('invalid decimal digit to display: {}'.format(digit))
 
     @property
     def x(self) -> int:

@@ -42,9 +42,9 @@ class ProtocolVersionError(PylcddcError):
         :param server_ver: server version
         :param client_vers: versions supported by the client
         """
-        super().__init__('Server and client version mismatch. '
-                         f'Supported versions by client: {client_vers},'
-                         f' version advertised by server: {server_ver}')
+        super().__init__('Server and client version mismatch. '+
+                         'Supported versions by client: {},'.format(client_vers)+
+                         ' version advertised by server: {}'.format(server_ver))
         self._server_ver = server_ver
         self._client_vers = client_vers
 

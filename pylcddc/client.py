@@ -268,7 +268,7 @@ class Client(Mapping):
             raise RuntimeError('Pending non-blocking screen updates')
 
         if s.name in self:
-            raise KeyError(f'screen name {s.name} is not unique')
+            raise KeyError('screen name {} is not unique'.format(s.name))
 
         candidate_id = self._screen_id_cnt + 1
         request_error_request = None

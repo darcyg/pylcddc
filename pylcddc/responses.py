@@ -122,10 +122,10 @@ class BaseResponse:
         """
         rtype = ResponseType.classify(response)
         if rtype is None:
-            raise ValueError(f'{self.__class__.__name__} '
-                             f'constructed with response string of '
-                             f'indeterminate type:'
-                             f' {response}')
+            raise ValueError('{} '.format(self.__class__.__name__)+
+                             'constructed with response string of '+
+                             'indeterminate type:'+
+                             ' {}'.format(response))
         else:
             self._response = response
             self._rtype = rtype
@@ -189,15 +189,15 @@ class ServInfoResponse(BaseResponse):
         """
         super().__init__(response)
         if self.response_type is not ResponseType.SERVINFO:
-            raise ValueError(f'{self.__class__.__name__} constructed with '
-                             f'response of mismatching type: '
-                             f'{self.response_type}')
+            raise ValueError('{} constructed with '.format(self.__class__.__name__)+
+                             'response of mismatching type: '+
+                             '{}'.format(self.response_type))
 
         match = self._regex.match(response)
         if match is None:
-            raise ValueError(f'{self.__class__.__name__} constructed with '
-                             f'response of correct type but invalid'
-                             f' content: {response}')
+            raise ValueError('{} constructed with '.format(self.__class__.__name__)+
+                             'response of correct type but invalid'+
+                             ' content: {}'.format(response))
         else:
             self._lcdproc_version = match['lcdproc_version']
             self._protocol_version = match['protocol_version']
@@ -282,14 +282,14 @@ class SuccessResponse(BaseResponse):
         """
         super().__init__(response)
         if self.response_type is not ResponseType.SUCCESS:
-            raise ValueError(f'{self.__class__.__name__} constructed with'
-                             f' response of mismatching type: '
-                             f'{self.response_type}')
+            raise ValueError('{} constructed with'.format(self.__class__.__name__)+
+                             ' response of mismatching type: '+
+                             '{}'.format(self.response_type))
 
         if self._regex.match(response) is None:
-            raise ValueError(f'{self.__class__.__name__} constructed with'
-                             f' response of correct type but invalid content: '
-                             f'{response}')
+            raise ValueError('{} constructed with'.format(self.__class__.__name__)+
+                             ' response of correct type but invalid content: '+
+                             '{}'.format(response))
 
 
 class ErrorResponse(BaseResponse):
@@ -310,16 +310,16 @@ class ErrorResponse(BaseResponse):
         """
         super().__init__(response)
         if self.response_type is not ResponseType.ERROR:
-            raise ValueError(f'{self.__class__.__name__} constructed with'
-                             f' response of mismatching type: '
-                             f'{self.response_type}')
+            raise ValueError('{} constructed with'.format(self.__class__.__name__)+
+                             ' response of mismatching type: '+
+                             '{}'.format(self.response_type))
 
         match = self._regex.match(response)
 
         if match is None:
-            raise ValueError(f'{self.__class__.__name__} constructed with'
-                             f' response of correct type but invalid content: '
-                             f'{response}')
+            raise ValueError('{} constructed with'.format(self.__class__.__name__)+
+                             ' response of correct type but invalid content: '+
+                             '{}'.format(response))
         else:
             self._reason = match['reason']
 
@@ -352,16 +352,16 @@ class ListenResponse(BaseResponse):
         """
         super().__init__(response)
         if self.response_type is not ResponseType.LISTEN:
-            raise ValueError(f'{self.__class__.__name__} constructed with'
-                             f' response of mismatching type: '
-                             f'{self.response_type}')
+            raise ValueError('{} constructed with'.format(self.__class__.__name__)+
+                             ' response of mismatching type: '+
+                             '{}'.format(self.response_type))
 
         match = self._regex.match(response)
 
         if match is None:
-            raise ValueError(f'{self.__class__.__name__} constructed with'
-                             f' response of correct type but invalid content: '
-                             f'{response}')
+            raise ValueError('{} constructed with'.format(self.__class__.__name__)+
+                             ' response of correct type but invalid content: '+
+                             '{}'.format(response))
         else:
             self._screen_id = int(match['screen_id'])
 
@@ -393,16 +393,16 @@ class IgnoreResponse(BaseResponse):
         """
         super().__init__(response)
         if self.response_type is not ResponseType.IGNORE:
-            raise ValueError(f'{self.__class__.__name__} constructed with'
-                             f' response of mismatching type: '
-                             f'{self.response_type}')
+            raise ValueError('{} constructed with'.format(self.__class__.__name__)+
+                             ' response of mismatching type: '+
+                             '{}'.format(self.response_type))
 
         match = self._regex.match(response)
 
         if match is None:
-            raise ValueError(f'{self.__class__.__name__} constructed with'
-                             f' response of correct type but invalid content: '
-                             f'{response}')
+            raise ValueError('{} constructed with'.format(self.__class__.__name__)+
+                             ' response of correct type but invalid content: '+
+                             '{}'.format(response))
         else:
             self._screen_id = int(match['screen_id'])
 

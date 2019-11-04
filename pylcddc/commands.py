@@ -67,7 +67,7 @@ class CommandGenerator:
                  escaped with a backslash
         """
         escaped = string.replace('"', '\\"')
-        return f'"{escaped}"'
+        return '"{}"'.format(escaped)
 
     @staticmethod
     def generate_attribute_setting(**attrs: typing.Dict[str, typing.Any]) \
@@ -93,8 +93,8 @@ class CommandGenerator:
         :param attrs: attributes and the values they are to be set to
         :return: attribute setting string sequence
         """
-        return [f'-{attr_name} '
-                f'{CommandGenerator.quote_string(str(attr_value))}'
+        return ['-{} '.format(attr_name)+
+                '{}'.format(CommandGenerator.quote_string(str(attr_value)))
                 for attr_name, attr_value in attrs.items()]
 
     @staticmethod
@@ -106,7 +106,7 @@ class CommandGenerator:
         :return: LCDd initialization command byte sequence that can be directly
                  sent to LCDd
         """
-        return f'{Command.INIT.value}\n'.encode(encoding='utf-8')
+        return ('{}\n'.format(Command.INIT.value)).encode(encoding='utf-8')
 
     @staticmethod
     def generate_set_client_attrs_command(**attrs) -> typing.Sequence[bytes]:
@@ -128,7 +128,7 @@ class CommandGenerator:
         :param screen_id: screen id of the screen
         :return: command byte sequence that can be directly sent to LCDd
         """
-        return f'{Command.ADD_SCREEN.value} {screen_id}\n'.encode('utf-8')
+        return ('{} {}\n'.format(Command.ADD_SCREEN.value,screen_id)).encode('utf-8')
 
     @staticmethod
     def generate_delete_screen_command(screen_id: int) -> bytes:
@@ -138,7 +138,7 @@ class CommandGenerator:
         :param screen_id: screen id of the screen
         :return: command byte sequence that can be directly sent to LCDd
         """
-        return f'{Command.DELETE_SCREEN.value} {screen_id}\n'.encode('utf-8')
+        return ('{} {}\n'.format(Command.DELETE_SCREEN.value,screen_id)).encode('utf-8')
 
     @staticmethod
     def generate_set_screen_attrs_commands(screen_id: int, **attrs) \
@@ -152,8 +152,8 @@ class CommandGenerator:
                  sent directly to LCDd
         """
         attr_strings = CommandGenerator.generate_attribute_setting(**attrs)
-        return [f'{Command.SET_SCREEN_ATTRS.value} {screen_id} '
-                f'{attr_str}\n'.encode('utf-8')
+        return [('{} {} '.format(Command.SET_SCREEN_ATTRS.value,screen_id)+
+                '{}\n'.format(attr_str)).encode('utf-8')
                 for attr_str in attr_strings]
 
     @staticmethod
@@ -169,9 +169,9 @@ class CommandGenerator:
         :return: LCDd widget add command byte sequence that can be sent
                  directly to LCDd
         """
-        return (f'{Command.ADD_WIDGET.value} {screen_id} {widget_id} '
-                f'{wtype.value}{" -in" if frame_id is not None else ""} '
-                f'{frame_id if frame_id is not None else ""}\n').encode('utf-8')
+        return ('{} {} {} '.format(Command.ADD_WIDGET.value,screen_id,widget_id)+
+                '{}{} '.format(wtype.value," -in" if frame_id is not None else "")+
+                '{}\n'.format(frame_id if frame_id is not None else "")).encode('utf-8')
 
     @staticmethod
     def generate_delete_widget_command(screen_id: int, widget_id: int) -> bytes:
@@ -183,7 +183,7 @@ class CommandGenerator:
         :return: LCDd widget remove command byte sequence that can be sent
                  directly to LCDd
         """
-        return (f'{Command.DELETE_WIDGET.value} {screen_id} {widget_id}\n'
+        return ('{} {} {}\n'.format(Command.DELETE_WIDGET.value,screen_id,widget_id)
                 ).encode('utf-8')
 
     @staticmethod
@@ -202,7 +202,7 @@ class CommandGenerator:
         :return: LCDd widget parameter set command byte sequence that can
                  be sent directly to LCDd
         """
-        output = [f'{Command.SET_WIDGET_PARMS.value} {screen_id} {widget_id}']
+        output = ['{} {} {}'.format(Command.SET_WIDGET_PARMS.value,screen_id,widget_id)]
         for param in parms:
             output.append(CommandGenerator.quote_string(str(param)))
         output.append('\n')

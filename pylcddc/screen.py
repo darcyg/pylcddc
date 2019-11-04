@@ -136,9 +136,9 @@ class Screen(widgets.WidgetContainer):
                 self._dict.clear()
                 self._widget_id_counter = 0
                 self._widget_ids.clear()
-                raise ValueError(f'widget {widget} has a conflicts with '
-                                 f'another widget with the same name. screen'
-                                 f'creation aborted.')
+                raise ValueError('widget {} has a conflicts with '.format(widget)+
+                                 'another widget with the same name. screen'+
+                                 'creation aborted.')
             self._dict[widget.name] = widget
             self._widget_ids[widget.name] = tuple(
                 range(self._widget_id_counter,
@@ -198,19 +198,19 @@ class Screen(widgets.WidgetContainer):
 
         for attr in attrs.keys():
             if attr not in allowed_attributes:
-                raise ValueError('attempted to set attribute with invalid '
-                                 f'name: {attr}')
+                raise ValueError('attempted to set attribute with invalid '+
+                                 'name: {}'.format(attr))
         for attr, val in attrs.items():
             type_validator = type_validators.setdefault(
                 attr, lambda v: isinstance(v, int))
             value_validator = value_validators.setdefault(
                 attr, lambda v: True)
             if not type_validator(val):
-                raise TypeError(f'wrong type for attribute: {attr},'
-                                f' type: {type(val)}')
+                raise TypeError('wrong type for attribute: {},'.format(attr)+
+                                ' type: {}'.format(type(val)))
             if not value_validator(val):
-                raise ValueError(f'wrong value for attribute: {attr},'
-                                 f' value: {val}')
+                raise ValueError('wrong value for attribute: {attr},'.format(attr)+
+                                 ' value: {val}'.format(val))
 
     @property
     def attrs(self) -> typing.Dict[str, typing.Any]:
